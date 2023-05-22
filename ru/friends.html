@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/image/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../assets/css/light.css" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/google-sans');
+    </style>
+    <title>Топ люди</title>
+</head>
+<body class="body_hide">
+    <button class="switch" onclick="document.location='../friends.html'" id="lang"><span class="material-symbols-rounded">public</span></button>
+    <nav class="navbar" id="navbar">
+        <div class="page-name" id="name"><button class="back-button" onclick="history.back()"><span class="material-symbols-rounded">arrow_back</span></button> Топ люди</div>
+        <div class="navbar__wrap">
+            <div class="hamb">
+                <div class="hamb__field" id="hamb">
+                    <span class="bar"></span> <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+            <ul class="menu" id="menu">
+                <li><a href="index.html" title="Главная страница" class="material-symbols-rounded">home<span class="navigation-list-name">Главная</span></a></li>
+                <li><a href="changelog.html" title="Список изменений" class="material-symbols-rounded">edit_document<span class="navigation-list-name">Изменения</span></a></li>
+                <li><a href="soft.html" title="Программы и прочее" class="material-symbols-rounded">folder<span class="navigation-list-name">Утилиты</span></a></li>
+                <li><a href="socials.html" title="Мои друзья" class="material-symbols-rounded active">group<span class="navigation-list-name">Друзья</span></a></li>
+                <li><a href="about.html" title="Информация о сайте, о авторе и т.д." class="material-symbols-rounded">account_circle<span class="navigation-list-name">Инфо</span></a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="popup" id="popup"></div>
+    <main>
+        <h1 id="page-title">Топ люди!</h1>
+        <h3>Здесь можно увидеть топ блогеров по мнению tertyr54-а! Встречайте:</h3>
+        <div class="pillars">
+            <div class="container-with-link" onclick="document.location='https://nerok.ml'">
+                <div class="inactive-container">
+                    <h2>Nerok</h2>
+                    <p>Обо мне: Я Nerok (Данил), Создатель <a href="https://nerok.ml" class="link">Nerok.ml</a> и автор канала <a href="https://www.youtube.com/@Nerokk" class="link">Nerok</a>. Люблю эксперементы над виндой, и над всем - что можно ;)</p>
+                    <p>Цитата: Ты должен быть готов к тому, что можешь быть неправ.</p>
+                </div>
+                <div class="inactive-container">
+                    <a href="https://nerok.ml"><button>Сайт</button></a>
+                </div>
+            </div>
+            <div class="container-with-link" onclick="document.location='https://ertorworld.ru'">
+                <div class="inactive-container">
+                    <h2>The Ertor</h2>
+                    <p>Обо мне: <a href="https://ertorworld.ru/about.html" class="link">Здесь</a></p>
+                    <p>Цитата: Если выпили хорошо значит утром плохо, если выпил плохо значит утром :Bruh:</p>
+                </div>
+                <div class="inactive-container">
+                    <a href="https://ertorworld.ru"><button>Сайт</button></a>
+                </div>
+            </div>
+            <div class="container-with-link" onclick="document.location='ost-sys.github.io'">
+                <div class="inactive-container">
+                    <h2>OST</h2>
+                    <p>OST - создатель этого сайта а также по совместительству топ человек <a href="ost-sys.github.io`">ost-sys.github.io
+                    <p>Цитата: В программировании нет ничего более волнительного, чем проблема, которую ты никак не можешь решить, пока не находишь правильное решение.</p>
+                </div>
+                <div class="inactive-container">
+                    <a href="https://ost-sys.github.io"><button>Сайт</button></a>
+                </div>
+            </div>
+            <div class="container-with-link" onclick="document.location='https://www.youtube.com/channel/UCnsIKqe2F0sfa_ezfidB5Fg'">
+                <div class="inactive-container">
+                    <h2>Daniel Myslivets</h2>
+                    <p>Обо мне: Абсолютно обычный человек</p>
+                    <p>Время интересных фактов: вентилятор нужен для того, чтобы вызвать комаров чеpез диcковод</p>
+                </div>
+                <div class="inactive-container">
+                    <a href="https://www.youtube.com/channel/UCnsIKqe2F0sfa_ezfidB5Fg"><button>YouTube</button></a>
+                </div>
+            </div>
+            <div class="container-with-link" onclick="document.location='https://tinelix.ru'">
+                <div class="inactive-container">
+                    <h2>Tinelix</h2>
+                    <p>Обо мне: Меня зовут Дмитрий, мне 19 лет. Работаю на <a href="https://www.youtube.com/channel/UCSPjn_Y0pLdPy6Ncb9NAdww" class="link">YouTube</a> на протяжении шести лет в развлекательно-технологическом направлении. Кроме этого я также путешествую по временам компьютеризации 90-х и 2000-х, занимаюсь программированием на различных языках с 2018 года.</p>
+                </div>
+                <div class="inactive-container">
+                    <a href="https://tinelix.ru"><button>Website</button></a>
+                </div>
+            </div>
+        </div>
+        <div class="separator"></div>
+        <div class="friends">
+            <h2>Мои друзья:</h2>
+        <center>Их нет:(</center>
+            <!-- <a href="https://nerok.ml">
+                <img src="../assets/image/nerok_banner.png" class="friends-link" alt="Nerok"/>
+            </a>
+            <a href="https://ertorworld.ru">
+                <img src="../assets/image/ertorworld.png" class="friends-link" alt="ertorworld">
+            </a>
+            <a href="https://mayplanet.ml">
+                <img src="../assets/image/maybanner.png" class="friends-link" alt="maydilsiel">
+            </a>
+            <a href="https://lisikpng.com">
+                <img src="http://lisikpng.com/img/baner.png" class="friends-link">
+            </a>
+            <a href="http://web1.tinelix.ru/">
+                <img src="../assets/image/default.gif" class="friends-link">
+            </a> -->
+            <h4 style="padding: 0px;">Хочешь быть здесь, пиши в ЛС <a href="https://t.me/tertyr54" class="link">Telegram</a></h4>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-section-info">
+            <script src="../assets/js/all_in_one_ru.js"></script>
+        </div>
+        <div class="footer-section-link">
+            <h3>Ссылка на сайт</h3>
+            <input type="text" value='<a href="https://ost-sys.github.io"><img src="<location_of_the_banner>" alt="OST"/></a>' id="myInput">
+            <br>
+            <div class="button-footer-pillars">
+                <button class="button-footer" onclick="myFunction()">Скопировтаь текст</button> 
+                <a href="../assets/image/ost.png"><button class="button-footer">Скачать картинку банера</button></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

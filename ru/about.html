@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/image/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../assets/css/light.css" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/dark.css" media="(prefers-color-scheme: dark)">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/google-sans');
+    </style>
+    <title>Информация</title>
+</head>
+<body class="body_hide">
+    <button class="switch" onclick="document.location='../about.html'" id="lang"><span class="material-symbols-rounded">public</span></button>
+    <nav class="navbar" id="navbar">
+        <div class="page-name"><button class="back-button" onclick="history.back()"><span class="material-symbols-rounded">arrow_back</span></button><span id="name">Информация</span></div>
+        <div class="navbar__wrap">
+            <div class="hamb">
+                <div class="hamb__field" id="hamb">
+                    <span class="bar"></span> <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+            <ul class="menu" id="menu">
+                <li><a href="index.html" title="Главная страница" class="material-symbols-rounded">home<span class="navigation-list-name">Главная</span></a></li>
+                <li><a href="changelog.html" title="Список изменений" class="material-symbols-rounded">edit_document<span class="navigation-list-name">Изменения</span></a></li>
+                <li><a href="soft.html" title="Программы и прочее" class="material-symbols-rounded">folder<span class="navigation-list-name">Утилиты</span></a></li>
+                <li><a href="friends.html" title="Мои друзья" class="material-symbols-rounded">group<span class="navigation-list-name">Друзья</span></a></li>
+                <li><a href="about.html" title="Информация о сайте, о авторе и т.д." class="material-symbols-rounded active">account_circle<span class="navigation-list-name">Инфо</span></a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="popup" id="popup"></div>
+    <main>
+        <h1 id="page-title">Информация</h1>
+        <div class="pillars">
+            <div class="container">
+                <div class="inactive-container">
+                    <h2>Основная информация</h2>
+                    <table>
+                        <tr>
+                            <td class="table-form-left-top">Имя</td><td class="table-form-right-top">Тимофей</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Возраст</td><td class="table-form">11 лет</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Псевдоним</td><td class="table-form">tertyr54</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Расположение</td><td class="table-form">Россия, Елец</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">День рождения</td><td class="table-form">8 декабря 2011 года</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form-left-bottom">Часовой пояс</td><td class="table-form-right-bottom">UTC+0 (Москва)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="container">
+                <div class="inactive-container">
+                    <h2>Мой компьютер</h2>
+                    <table>
+                        <tr>
+                            <td class="table-form-left-top">Процессор</td><td class="table-form-right-top">Intel Pentium N4200 (2,50 ГГц)</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Графическое устройство</td><td class="table-form">NVIDIA GeForce 920MX (1 ГБ)</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Оперативная память</td><td class="table-form">4 ГБ DDR3</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" class="table-form">Хранилище</th>
+                            <td class="table-form">HDD 450 ГБ (Системый)</td>
+                        </tr>
+                        <tr>
+                        <tr>
+                            <td class="table-form-left-bottom">Материнская плата</td><td class="table-form-right-bottom">Asustek x540nv (ноутбук Asus D540NA)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="container">
+                <div class="inactive-container">
+                    <h2>Оборудование для тестов</h2>
+                    <table>
+                        <tr>
+                            <td class="table-form-left-top">Виртуальная машина</td><td class="table-form-right-top">VMware Workstation 16</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Видеоредактор</td><td class="table-form">NCH Videopad 8</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Запись экрана</td><td class="table-form">oCam Portable</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form-left-bottom">Превью</td><td class="table-form-right-bottom">Paint, GIMP</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <h1>Мои устройства</h1>
+        <center>
+            <div class="immutable-pillars">
+                <div class="container" style="background-color: var(--back-green-a1-700); color: var(--back-green-a1-100);">Основное устройство</div>
+                <div class="container">В наличии</div>
+                <div class="container" style="background-color: var(--back-red-a1-700); color: var(--back-red-a1-100);">Нет в наличии</div>
+            </div>
+        </center>
+        <div class="separator"></div>
+        <div class="pillars-other">
+            <div class="container" style="background-color: var(--back-green-a1-700); color: var(--back-green-a1-100);">
+                <div class="inactive-container">
+                    <h2  style="color: var(--back-green-a1-200);">Infinix Note 12 2023(SM-A536E)</h2>
+                    <table>
+                        <tr>
+                            <td class="table-form-left-top" style="background-color: var(--back-green-a1-800);">Процессор</td><td class="table-form-right-top" style="background-color: var(--back-green-a1-800);">Helio G99(2400 МГц)</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-green-a1-800);">Графическое устройство</td><td class="table-form" style="background-color: var(--back-green-a1-800);">Mali-G57 MC2</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-green-a1-800);">Экран</td><td class="table-form" style="background-color: var(--back-green-a1-800);">1080 * 2400 (6,46 дюймов) - 60 Гц</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-green-a1-800);">Хранилище</td><td class="table-form" style="background-color: var(--back-green-a1-800);">128 ГБ</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-green-a1-800);">Оперативная память</td><td class="table-form" style="background-color: var(--back-green-a1-800);">8 + 5 ГБ LPDDR4X</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-green-a1-800);">Аккумулятор</td><td class="table-form" style="background-color: var(--back-green-a1-800);">5000 мАч</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" class="table-form" style="background-color: var(--back-green-a1-800);">Камера
+                                <td class="table-form" style="background-color: var(--back-green-a1-800);">Задняя: 50 МП + 12 МП + 5 МП + 5 МП</td>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-green-a1-800);">Фронтальная: 16 МП</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-green-a1-800);">Оболочка</td><td class="table-form" style="background-color: var(--back-green-a1-800);">XOS (Android 12)</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form-left-bottom" style="background-color: var(--back-green-a1-800);">Состояние</td><td class="table-form-right-bottom" style="background-color: var(--back-green-a1-800);"><span style="color: var(--back-red-a1-50)">Официальный</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="container">
+                <div class="inactive-container">
+                    <h2>-</h2>
+                    <table>
+                        <tr>
+                            <td class="table-form-left-top">Процессор</td><td class="table-form-right-top">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Графическое устройство</td><td class="table-form">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Экран</td><td class="table-form">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Хранилище</td><td class="table-form">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Оперативная память</td><td class="table-form">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Аккумулятор</td><td class="table-form">-</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" class="table-form">Камера
+                                <td class="table-form">-</td>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class="table-form">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form">Оболочка</td><td class="table-form">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form-left-bottom">Состояние</td><td class="table-form-right-bottom"><span style="color: var(--back-red-a1-100)">-</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="container" style="background-color: var(--back-red-a1-700); color: var(--back-red-a1-100);">
+                <div class="inactive-container">
+                    <h2 style="color: var(--back-red-a1-200);">-</h2>
+                    <table>
+                        <tr>
+                            <td class="table-form-left-top" style="background-color: var(--back-red-a1-800);">Процессор</td><td class="table-form-right-top" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Графическое устройство</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Экран</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Хранилище</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Оперативная память</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Аккумулятор</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" class="table-form" style="background-color: var(--back-red-a1-800);">Камера
+                                <td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Оболочка</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form-left-bottom" style="background-color: var(--back-red-a1-800);">Состояние</td><td class="table-form-right-bottom" style="background-color: var(--back-red-a1-800);"><span style="color: var(--back-red-a1-50)">-</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+                        <div class="container" style="background-color: var(--back-red-a1-700); color: var(--back-red-a1-100);">
+                <div class="inactive-container">
+                    <h2 style="color: var(--back-red-a1-200);">-</h2>
+                    <table>
+                        <tr>
+                            <td class="table-form-left-top" style="background-color: var(--back-red-a1-800);">Процессор</td><td class="table-form-right-top" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Графическое устройство</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Экран</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Хранилище</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Оперативная память</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Аккумулятор</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" class="table-form" style="background-color: var(--back-red-a1-800);">Камера
+                                <td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Оболочка</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form-left-bottom" style="background-color: var(--back-red-a1-800);">Состояние</td><td class="table-form-right-bottom" style="background-color: var(--back-red-a1-800);"><span style="color: var(--back-red-a1-50)">-</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="container" style="background-color: var(--back-red-a1-700); color: var(--back-red-a1-100);">
+                <div class="inactive-container">
+                    <h2 style="color: var(--back-red-a1-200);">-</h2>
+                    <table>
+                        <tr>
+                            <td class="table-form-left-top" style="background-color: var(--back-red-a1-800);">Процессор</td><td class="table-form-right-top" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Графическое устройство</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Экран</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Хранилище</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Оперативная память</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Аккумулятор</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" class="table-form" style="background-color: var(--back-red-a1-800);">Камера
+                                <td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Оболочка</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form-left-bottom" style="background-color: var(--back-red-a1-800);">Состояние</td><td class="table-form-right-bottom" style="background-color: var(--back-red-a1-800);"><span style="color: var(--back-red-a1-50)">-</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+                               <div class="container" style="background-color: var(--back-red-a1-700); color: var(--back-red-a1-100);">
+                <div class="inactive-container">
+                    <h2 style="color: var(--back-red-a1-200);">-</h2>
+                    <table>
+                        <tr>
+                            <td class="table-form-left-top" style="background-color: var(--back-red-a1-800);">Процессор</td><td class="table-form-right-top" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Графическое устройство</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Экран</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Хранилище</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Оперативная память</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Аккумулятор</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" class="table-form" style="background-color: var(--back-red-a1-800);">Камера
+                                <td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form" style="background-color: var(--back-red-a1-800);">Оболочка</td><td class="table-form" style="background-color: var(--back-red-a1-800);">-</td>
+                        </tr>
+                        <tr>
+                            <td class="table-form-left-bottom" style="background-color: var(--back-red-a1-800);">Состояние</td><td class="table-form-right-bottom" style="background-color: var(--back-red-a1-800);"><span style="color: var(--back-red-a1-50)">-</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+    </main>
+    <footer>
+        <div class="footer-section-info">
+            <script src="../assets/js/all_in_one_ru.js"></script>
+        </div>
+        <div class="footer-section-link">
+            <h3>Ссылка на сайт</h3>
+            <input type="text" value='<a href="https://ost-sys.github.io"><img src="<location_of_the_banner>" alt="OST"/></a>' id="myInput">
+            <br>
+            <div class="button-footer-pillars">
+                <button class="button-footer" onclick="myFunction()">Скопировтаь текст</button> 
+                <a href="../assets/image/ost.png"><button class="button-footer">Скачать картинку банера</button></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
