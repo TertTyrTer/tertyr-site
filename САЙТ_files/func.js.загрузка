@@ -1,0 +1,1071 @@
+$(function () {
+    var text_vuz;
+    var text_pos;
+    var notification = [];
+
+    function activateSelect(){
+        if($('#link').length) {
+            if ($('#link').prop('checked')) {
+                $('.chosen-drop').show();
+            } else {
+                $('.chosen-drop').hide();
+            }
+        }
+    };
+
+    activateSelect();
+
+    $('#link').on('change', function(){
+        activateSelect();
+    });
+
+    if ($(".quiz-start").length>0) {
+        $('.quiz-start').click(function (e) {
+            e.stopPropagation();
+            let $this = $(this)
+            let title = $(this).data('title')
+            let duration = $(this).data('duration')
+
+            $.ajax({
+                url: '/office/user/quizstart',
+                data: '',
+                dataType: "json",
+                type: 'POST',
+                success: function (data) {
+
+                    if (data.status=='OK') {
+
+
+
+                        Swal.fire({
+                            //reverseButtons: true,
+                            confirmButtonColor: '#32d7c0',
+                            focusCancel: true,
+                            showCancelButton: true,
+                            html: 'Блок №4<br>' +
+                                '<strong>'+title+'</strong><br><br>' +
+                                'Доступных попыток: <strong>1</strong><br>' +
+                                'Ограничение по времени: <strong>'+duration+'</strong><br><br><br>',
+                            confirmButtonText: 'Приступить к выполнению',
+                            cancelButtonText: 'Назад'
+                        }).then((result) => {
+                            if (result.value === true) {
+                                location.href = '/office/user/quizcontrol/4'
+                            }
+                        });
+                    } else if (data.status=='error') {
+
+                        if (data.type=='no_esia') {
+                            Swal.fire({
+                                title: 'Информация',
+                                html: '<p>Ваш аккаунт не связан с аккаунтом на ГОСУСЛУГАХ.</p><p>Для прохождения Викторины необходимо предварительно осуществить связку Вашего аккаунта РЭШ с аккаунтом на ГОСУСЛУГАХ</p>'
+                            })
+                        } else if (data.type=='already_done') {
+                            Swal.fire({
+                                title: 'Информация',
+                                html: '<p>Вы уже участвовали в данном блоке Викторины ранее.</p>'
+                            })
+                        } else if (data.type=='already_done_esia') {
+                            Swal.fire({
+                                title: 'Информация',
+                                html: '<p>Викторина уже была пройдена ранее пользователем с данным аккаунтом на ГОСУСЛУГАХ</p>'
+                            })
+                        } else if (data.type=='times_up') {
+                            Swal.fire({
+                                title: 'Информация',
+                                html: '<p>Время, отведенное на прохождение данного блока Викторины, истекло.</p>'
+                            })
+                        } else if (data.type=='not_authed') {
+                            Swal.fire({
+                                title: 'Информация',
+                                html: '<p>Пожалуйста авторизуйтесь.</p>'
+                            })
+                        } else if (data.type=='not_pupil') {
+                            Swal.fire({
+                                title: 'Информация',
+                                html: '<p>Некорректная роль пользователя.</p>'
+                            })
+                        } else {
+                            Swal.fire({
+                                title: 'Информация',
+                                html: 'Ошибка сервера. Попробуйте пожалйста позже.'
+                            })
+                        }
+
+                    } else {
+
+                        Swal.fire({
+                            title: 'Информация',
+                            html: 'Ошибка сервера. Попробуйте пожалйста позже.'
+                        })
+
+                    }
+
+
+                }
+            });
+
+            return false;
+        });
+    }
+
+
+
+    $('#vz').change(function () {
+        text_vuz = $(this).val();
+    });
+
+    $('#spec').change(function () {
+        text_pos = $(this).val();
+    });
+
+    $('#ajax-vz_add_btn').click(function () {
+        if (text_vuz.length && text_pos.length) {
+            $.post('/office/user/setting/ajax-add-university', {vz: text_vuz, spec: text_pos}, function (v) {
+
+            }, 'json');
+        } else {
+            return false;
+        }
+    });
+
+    $('.ajax-vuz-delete').click(function () {
+        $.post('/office/user/setting/ajax-remove-university', {val: $(this).data('id')}, function (v) {
+
+        }, 'json');
+    });
+
+    $('.profile-photo-delete').click(function () {
+        $.post('/office/user/setting/ajax-photo-delete', {}, function (v) {
+
+        }, 'json');
+    });
+    $('#add-new-children').click(function () {
+        $.post('/office/user/setting/ajax-new-children', {}, function (v) {
+            $('#qid').html(v);
+            $('#new_children').show();
+        }, 'json');
+    });
+
+    $('#add-parent-ok').click(function () {
+        var parentQuid = $('.my-id__add-child__input').val();
+        if (parentQuid.length) {
+            $.post('/office/user/setting/ajax-new-parent', {
+                val: parentQuid
+            }, function (v) {
+                $('#add-parent-text').html(v);
+                $('.my-id__add-child__input').hide();
+                $('.my-id__add-child__ok').hide();
+                $('.my-id__add-child__btn').show();
+            }, 'json');
+        } else {
+            $('.my-id__add-child__input').focus();
+            return false;
+        }
+    });
+
+    $('.ajax-del-parent').click(function () {
+        $.post('/office/user/setting/ajax-del-parent', {val: $(this).data('id')}, function (v) {
+
+        }, 'json');
+    });
+
+    $('.ajax-del-pupil').click(function () {
+        $.post('/office/user/setting/ajax-del-pupil', {val: $(this).data('id')}, function (v) {
+
+        }, 'json');
+    });
+
+    $('._tabs__tab').click(function () {
+        var type = $(this).data('type');
+        if ($(this).data('href')) {
+            $.post($(this).data('href'), {ajax: true}, function (v) {
+                if (type == 'print') {
+                    $('.tabs_content').html(v);
+                    $('.icon_print').click(function () {
+                        var printing_css = '<style media=print>tr:nth-child(even) td{background: #f0f0f0;}</style>';
+                        $.post('conspectus/?print=1', null, function (v) {
+                            var html_to_print = printing_css + v;
+                            var iframe = $('<iframe id="print_frame">');
+                            $('body').append(iframe);
+                            var doc = $('#print_frame')[0].contentDocument || $('#print_frame')[0].contentWindow.document;
+                            var win = $('#print_frame')[0].contentWindow || $('#print_frame')[0];
+                            doc.getElementsByTagName('body')[0].innerHTML = html_to_print;
+                            win.print();
+                            $('iframe').remove();
+                        });
+
+                    });
+                } else {
+                    $('.tabs_content').html(v);
+                }
+            });
+        }
+    });
+
+    $(".lesson-teachers__button").on("click", function () {
+        if ($('.none').data('clicked')) {
+            location.href = $(this).data('href');
+        }
+        else {
+            $('.none').data('clicked', 'yes');
+        }
+    });
+
+    $('#add-parent-cancel').click(function () {
+        $('.my-id__add-child__input').hide();
+        $('.my-id__add-child__ok').hide();
+        $('.my-id__add-child__btn').show();
+    });
+
+    $("form[name=resh_search_widget]:nth-child(2)").submit(function (event) {
+        var schoolClass = [];
+        $(".lk-chk:checked").each(function () {
+            schoolClass.push($(this).val());
+        });
+        $('#resh_search_widget_class').val(schoolClass);
+    });
+
+    $('.notification-select').change(function () {
+        if ($(this).is(":checked")) {
+            notification.push($(this).data('id'));
+        } else {
+            id = notification.indexOf($(this).data('id'));
+            delete notification[id];
+        }
+    });
+
+    $('.diary-datepicker-diary').change(function () {
+        changeUrlParam($(this).data('type'), $(this).val());
+    });
+
+    $('.change-pupils').change(function () {
+        $.post($(this).data('href'), {val: $(this).val()}, function (v) {
+            location.reload();
+        }, 'json');
+    });
+
+    $('.chosen-select-diary').change(function () {
+        changeUrlParam($(this).data('type'), $(this).val());
+    });
+
+    // $('.table-diary th').click(function () {
+    //     if (getURLParameter($(this).data('type')) && getURLParameter($(this).data('type')) == $(this).data('sort') + '-asc') {
+    //         changeUrlParam($(this).data('type'), $(this).data('sort') + '-desc');
+    //     } else {
+    //         changeUrlParam($(this).data('type'), $(this).data('sort') + '-asc');
+    //     }
+    // });
+
+    $('.subjects-list-teacher').change(function () {
+        window.location = '/teacher/' + parseInt($('select[name=subject]').val()) + '/' + parseInt($('select[name=class]').val()) + '/';
+    });
+
+    $('.lesson-video__link').click(function () {
+        var $players = $('.lesson-video__player-block .lesson-video__player'),
+            $player = $('.lesson-video__player-block .' + $(this).data('class'));
+
+        $players.hide();
+        $player.show();
+
+        $players.each(function(){
+            $(this).find('iframe').get(0).contentWindow.postMessage('pause', '*');
+        });
+
+        $('.lesson-video__link_active').removeClass('lesson-video__link_active');
+        $(this).addClass('lesson-video__link_active');
+    });
+
+    $('.class-list-teacher').change(function () {
+        window.location = '/teacher/' + parseInt($('select[name=subject]').val()) + '/' + parseInt($('select[name=class]').val()) + '/';
+    });
+
+    $('.msg-delete-all').click(function () {
+        $.post('/office/user/notification/ajax', {type: 'delete', val: notification}, function (v) {
+
+        }, 'json');
+    });
+
+    $('.lk-block-opts .icon_delete-cross').click(function () {
+
+        $.post($(this).data('href'), {val: $(this).data('type')}, function (v) {
+
+        }, 'json');
+    });
+
+    $('.search-more').click(function () {
+        const formData = $('.form-search-detailed').serializeArray().reduce((result, item) => {
+            return { ...result, [item.name]: item.value };
+        }, {});
+
+        $.post('/search/ajax/', {
+            'resh_search_widget[type]': formData['resh_search_widget[type]'],
+            'resh_search_widget[search]': formData['resh_search_widget[search]'],
+            'resh_search_widget[class]': formData['resh_search_widget[class]'],
+            'resh_search_widget[subject]': formData['resh_search_widget[subject]'],
+            'page': $(this).data('now') + 1
+        }, function (result) {
+            const $searchMore = $('.search-more');
+            const count = $searchMore.data('now') + 1;
+            if (((parseInt($('#count').html())) - count * 6) <= 0) {
+                $searchMore.hide();
+            }
+            $searchMore.data('now', count);
+            $('.search-result').append(result);
+        });
+    });
+
+    $('._msgs-select').click(function () {
+        if ($(this).is(":checked")) {
+            notification = [];
+            $(".notification-select").each(function () {
+                notification.push($(this).data('id'));
+            });
+            notification.push($(this).data('id'));
+        } else {
+            notification = [];
+        }
+    });
+
+    $('#thumbs').delegate('img', 'click', function () {
+        $('#largeImage').attr('src', $(this).attr('src').replace('thumb', 'large'));
+        $('#description').html($(this).attr('alt'));
+    });
+
+    $(document).on('click', '.lesson-video__userbar-icons .icon_thumb-down', function () {
+        var link = $(this);
+        $.post('/office/user/lessonlike/ajax', {type: 'unlike', val: $(this).data('id')}, function (v) {
+            if (v === true) {
+                link.removeClass('icon_thumb-down').addClass('icon_sidebar-checked').removeAttr('href');
+                link.next().removeClass('icon_sidebar-checked').addClass('icon_thumb-up').attr('href', '#');
+            }
+        }, 'json');
+        return false;
+    });
+    $(document).on('click', '.lesson-video__userbar-icons .icon_thumb-up', function () {
+        var link = $(this);
+        $.post('/office/user/lessonlike/ajax', {type: 'like', val: $(this).data('id')}, function (v) {
+            if (v === true) {
+                link.removeClass('icon_thumb-up').addClass('icon_sidebar-checked').removeAttr('href');
+                link.prev().removeClass('icon_sidebar-checked').addClass('icon_thumb-down').attr('href', '#');
+            }
+        }, 'json');
+        return false;
+    });
+
+    $('.popular-lessons select').on('change', function () {
+        $.get('/class/popularlessons/ajax', {subject: $(this).val(), id: $(this).data("schoolclass") }, function (data) {
+            $('.popular-lessons__more').remove();
+            $('.popular-lessons__box').replaceWith(data);
+        }, 'html');
+    });
+    $(document).on('click', '.popular-lessons__more', function () {
+        if ($(this).hasClass('sys_loading')) {
+            return false;
+        }
+        $(this).text('Загружается...').addClass('sys_loading');
+        $.get($(this).data('href'), function (data) {
+            var block = $('<div>' + data + '</div>');
+            $('.popular-lessons__box').append(block.find('.popular-lessons__box').html());
+            if (block.find('.popular-lessons__more').length > 0) {
+                $('.popular-lessons__more').replaceWith(block.find('.popular-lessons__more'));
+            } else {
+                $('.popular-lessons__more').remove();
+            }
+        }, 'html');
+        return false;
+    });
+
+    var lessonVideos = $('.scene__content video');
+    lessonVideos.on('play', function () {
+        var tab = $('.tests-layout').data('tab');
+        if (tab === 'main') {
+            var lessonId = $('.tests-layout').data('lesson-id');
+            var url = Routing.generate('resh_lesson_addition', {id: lessonId});
+            $.post(url);
+        }
+    });
+
+    if ($("#application_sonata_user_registration_region").length>0) {
+        $("#application_sonata_user_registration_region option").each(function() {
+            if ($(this).val()==89 || $(this).val()==90) $(this).remove();
+        });
+        $("#application_sonata_user_registration_region").trigger("chosen:updated");
+    }
+
+
+    let region_val = ''
+    if ($("#profile_region").length>0) {
+        /*$("#profile_region option").each(function() {
+            if ($(this).val()==89 || $(this).val()==90) $(this).remove();
+        });
+        $("#profile_region").trigger("chosen:updated");*/
+
+        region_val = $("#profile_region").val()
+
+    }
+
+    if ($("#profile_country").length>0) {
+
+        ele_region = $("#profile_region")
+        ele_region_id = "#profile_region";
+
+        if ($("#profile_country").val()==183) {
+
+            $(ele_region_id + " option").each(function () {
+                $(this).remove();
+            });
+            ele_region.append($('<option>', {value: '', text: 'Выберите регион'}));
+            ele_region.append($('<option>', {value: 1, text: 'Республика Адыгея'}));
+            ele_region.append($('<option>', {value: 2, text: 'Республика Башкортостан'}));
+            ele_region.append($('<option>', {value: 3, text: 'Республика Бурятия'}));
+            ele_region.append($('<option>', {value: 4, text: 'Республика Алтай'}));
+            ele_region.append($('<option>', {value: 5, text: 'Республика Дагестан'}));
+            ele_region.append($('<option>', {value: 6, text: 'Республика Ингушетия'}));
+            ele_region.append($('<option>', {value: 7, text: 'Кабардино-Балкарская Республика'}));
+            ele_region.append($('<option>', {value: 8, text: 'Республика Калмыкия'}));
+            ele_region.append($('<option>', {value: 9, text: 'Карачаево-Черкесская Республика'}));
+            ele_region.append($('<option>', {value: 10, text: 'Республика Карелия'}));
+            ele_region.append($('<option>', {value: 11, text: 'Республика Коми'}));
+            ele_region.append($('<option>', {value: 12, text: 'Республика Марий Эл'}));
+            ele_region.append($('<option>', {value: 13, text: 'Республика Мордовия'}));
+            ele_region.append($('<option>', {value: 14, text: 'Республика Саха (Якутия)'}));
+            ele_region.append($('<option>', {value: 15, text: 'Республика Северная Осетия — Алания'}));
+            ele_region.append($('<option>', {value: 16, text: 'Республика Татарстан'}));
+            ele_region.append($('<option>', {value: 17, text: 'Республика Тыва'}));
+            ele_region.append($('<option>', {value: 18, text: 'Удмуртская Республика'}));
+            ele_region.append($('<option>', {value: 19, text: 'Республика Хакасия'}));
+            ele_region.append($('<option>', {value: 20, text: 'Чеченская Республика'}));
+            ele_region.append($('<option>', {value: 21, text: 'Чувашская Республика'}));
+            ele_region.append($('<option>', {value: 22, text: 'Алтайский край'}));
+            ele_region.append($('<option>', {value: 23, text: 'Краснодарский край'}));
+            ele_region.append($('<option>', {value: 24, text: 'Красноярский край'}));
+            ele_region.append($('<option>', {value: 25, text: 'Приморский край'}));
+            ele_region.append($('<option>', {value: 26, text: 'Ставропольский край'}));
+            ele_region.append($('<option>', {value: 27, text: 'Хабаровский край'}));
+            ele_region.append($('<option>', {value: 28, text: 'Амурская область'}));
+            ele_region.append($('<option>', {value: 29, text: 'Архангельская область'}));
+            ele_region.append($('<option>', {value: 30, text: 'Астраханская область'}));
+            ele_region.append($('<option>', {value: 31, text: 'Белгородская область'}));
+            ele_region.append($('<option>', {value: 32, text: 'Брянская область'}));
+            ele_region.append($('<option>', {value: 33, text: 'Владимирская область'}));
+            ele_region.append($('<option>', {value: 34, text: 'Волгоградская область'}));
+            ele_region.append($('<option>', {value: 35, text: 'Вологодская область'}));
+            ele_region.append($('<option>', {value: 36, text: 'Воронежская область'}));
+            ele_region.append($('<option>', {value: 37, text: 'Ивановская область'}));
+            ele_region.append($('<option>', {value: 38, text: 'Иркутская область'}));
+            ele_region.append($('<option>', {value: 39, text: 'Калининградская область'}));
+            ele_region.append($('<option>', {value: 40, text: 'Калужская область'}));
+            ele_region.append($('<option>', {value: 41, text: 'Камчатский край'}));
+            ele_region.append($('<option>', {value: 42, text: 'Кемеровская область'}));
+            ele_region.append($('<option>', {value: 43, text: 'Кировская область'}));
+            ele_region.append($('<option>', {value: 44, text: 'Костромская область'}));
+            ele_region.append($('<option>', {value: 45, text: 'Курганская область'}));
+            ele_region.append($('<option>', {value: 46, text: 'Курская область'}));
+            ele_region.append($('<option>', {value: 47, text: 'Ленинградская область'}));
+            ele_region.append($('<option>', {value: 48, text: 'Липецкая область'}));
+            ele_region.append($('<option>', {value: 49, text: 'Магаданская область'}));
+            ele_region.append($('<option>', {value: 50, text: 'Московская область'}));
+            ele_region.append($('<option>', {value: 51, text: 'Мурманская область'}));
+            ele_region.append($('<option>', {value: 52, text: 'Нижегородская область'}));
+            ele_region.append($('<option>', {value: 53, text: 'Новгородская область'}));
+            ele_region.append($('<option>', {value: 54, text: 'Новосибирская область'}));
+            ele_region.append($('<option>', {value: 55, text: 'Омская область'}));
+            ele_region.append($('<option>', {value: 56, text: 'Оренбургская область'}));
+            ele_region.append($('<option>', {value: 57, text: 'Орловская область'}));
+            ele_region.append($('<option>', {value: 58, text: 'Пензенская область'}));
+            ele_region.append($('<option>', {value: 59, text: 'Пермский край'}));
+            ele_region.append($('<option>', {value: 60, text: 'Псковская область'}));
+            ele_region.append($('<option>', {value: 61, text: 'Ростовская область'}));
+            ele_region.append($('<option>', {value: 62, text: 'Рязанская область'}));
+            ele_region.append($('<option>', {value: 63, text: 'Самарская область'}));
+            ele_region.append($('<option>', {value: 64, text: 'Саратовская область'}));
+            ele_region.append($('<option>', {value: 65, text: 'Сахалинская область'}));
+            ele_region.append($('<option>', {value: 66, text: 'Свердловская область'}));
+            ele_region.append($('<option>', {value: 67, text: 'Смоленская область'}));
+            ele_region.append($('<option>', {value: 68, text: 'Тамбовская область'}));
+            ele_region.append($('<option>', {value: 69, text: 'Тверская область'}));
+            ele_region.append($('<option>', {value: 70, text: 'Томская область'}));
+            ele_region.append($('<option>', {value: 71, text: 'Тульская область'}));
+            ele_region.append($('<option>', {value: 72, text: 'Тюменская область'}));
+            ele_region.append($('<option>', {value: 73, text: 'Ульяновская область'}));
+            ele_region.append($('<option>', {value: 74, text: 'Челябинская область'}));
+            ele_region.append($('<option>', {value: 75, text: 'Забайкальский край'}));
+            ele_region.append($('<option>', {value: 76, text: 'Ярославская область'}));
+            ele_region.append($('<option>', {value: 77, text: 'Москва'}));
+            ele_region.append($('<option>', {value: 78, text: 'Санкт-Петербург'}));
+            ele_region.append($('<option>', {value: 79, text: 'Еврейская автономная область'}));
+            ele_region.append($('<option>', {value: 80, text: 'Республика Крым'}));
+            ele_region.append($('<option>', {value: 81, text: 'Ненецкий автономный округ'}));
+            ele_region.append($('<option>', {value: 82, text: 'Ханты-Мансийский АО'}));
+            ele_region.append($('<option>', {value: 83, text: 'Чукотский автономный округ'}));
+            ele_region.append($('<option>', {value: 84, text: 'Ямало-Ненецкий АО'}));
+            ele_region.append($('<option>', {value: 85, text: 'Севастополь'}));
+            ele_region.append($('<option>', {value: 86, text: 'Байконур'}));
+            ele_region.append($('<option>', {value: 87, text: 'Донецкая Народная Республика'}));
+            ele_region.append($('<option>', {value: 88, text: 'Луганская Народная Республика'}));
+            ele_region.append($('<option>', {value: 91, text: 'Запорожская область'}));
+            ele_region.append($('<option>', {value: 92, text: 'Херсонская область'}));
+            ele_region.val(region_val);
+
+            ele_region.trigger("chosen:updated");
+
+        } else if ($("#profile_country").val()==141) {
+            $(ele_region_id+" option").each(function() {
+                $(this).remove();
+            });
+            ele_region.append($('<option>', {value: '', text: 'Выберите регион'}));
+            ele_region.append($('<option>', {value: 89, text: 'Улан-Батор'}));
+            ele_region.append($('<option>', {value: 90, text: 'Иное'}));
+            ele_region.val(region_val);
+
+            ele_region.trigger("chosen:updated");
+
+        }
+    }
+
+});
+
+function addLessons(elem) {
+    $.post(null, {now: $(elem).data('now')}, function (v) {
+        $('.teacher-lessons__box').html(v);
+        $(elem).hide();
+    });
+}
+
+function setCountry(elem) {
+    if ($(elem).val() != 183 && $(elem).val() != 141) {
+        $('#block-region-school').fadeOut(300).find('select').each(function () {
+            $(this).attr({'required': false})
+            $('#application_sonata_user_registration_region').val('');
+            $("#application_sonata_user_registration_region").trigger("chosen:updated");
+            $('#application_sonata_user_registration_schoolLocality').val('');
+            $("#application_sonata_user_registration_schoolLocality").trigger("chosen:updated");
+            $('#application_sonata_user_registration_school').val('');
+            $("#application_sonata_user_registration_school").trigger("chosen:updated");
+
+            $('#profile_region').val('');
+            $("#profile_region").trigger("chosen:updated");
+            $('#profile_schoolLocality').val('');
+            $("#profile_schoolLocality").trigger("chosen:updated");
+            $('#profile_school').val('');
+            $("#profile_school").trigger("chosen:updated");
+
+        });
+    } else if ($(elem).val() == 141) {
+        $('#block-region-school').fadeIn(300).find('select').each(function(){
+            let role = $(elem).closest('form').find('.js-user-role select').find('option:selected').text();
+            if (($(this).attr('id') !== 'application_sonata_user_registration_school') || (role !== 'Родитель')) {
+                $(this).attr({'required':true})
+            }
+        });
+
+        let ele_region = ''
+        let ele_region_id = ''
+        if ($("#application_sonata_user_registration_region").length>0) {
+            ele_region = $("#application_sonata_user_registration_region")
+            ele_region_id = "#application_sonata_user_registration_region"
+        }
+        if ($("#profile_region").length>0) {
+            ele_region = $("#profile_region")
+            ele_region_id = "#profile_region"
+        }
+
+        $(ele_region_id+" option").each(function() {
+            $(this).remove();
+        });
+        ele_region.append($('<option>', {value: '', text: 'Выберите регион'}));
+        ele_region.append($('<option>', {value: 89, text: 'Улан-Батор'}));
+        ele_region.append($('<option>', {value: 90, text: 'Иное'}));
+        ele_region.trigger("chosen:updated");
+
+
+    } else {
+        $('#block-region-school').fadeIn(300).find('select').each(function(){
+            let role = $(elem).closest('form').find('.js-user-role select').find('option:selected').text();
+            if (($(this).attr('id') !== 'application_sonata_user_registration_school') || (role !== 'Родитель')) {
+                $(this).attr({'required':true})
+            }
+        });
+
+        let ele_region = ''
+        if ($("#application_sonata_user_registration_region").length>0) {
+            ele_region = $("#application_sonata_user_registration_region")
+            ele_region_id = "#application_sonata_user_registration_region"
+        }
+        if ($("#profile_region").length>0) {
+            ele_region = $("#profile_region")
+            ele_region_id = "#profile_region"
+        }
+
+        $(ele_region_id+" option").each(function() {
+            $(this).remove();
+        });
+        ele_region.append($('<option>', {value: '', text: 'Выберите регион'}));
+        ele_region.append($('<option>', {value: 1, text: 'Республика Адыгея'}));
+        ele_region.append($('<option>', {value: 2, text: 'Республика Башкортостан'}));
+        ele_region.append($('<option>', {value: 3, text: 'Республика Бурятия'}));
+        ele_region.append($('<option>', {value: 4, text: 'Республика Алтай'}));
+        ele_region.append($('<option>', {value: 5, text: 'Республика Дагестан'}));
+        ele_region.append($('<option>', {value: 6, text: 'Республика Ингушетия'}));
+        ele_region.append($('<option>', {value: 7, text: 'Кабардино-Балкарская Республика'}));
+        ele_region.append($('<option>', {value: 8, text: 'Республика Калмыкия'}));
+        ele_region.append($('<option>', {value: 9, text: 'Карачаево-Черкесская Республика'}));
+        ele_region.append($('<option>', {value: 10, text: 'Республика Карелия'}));
+        ele_region.append($('<option>', {value: 11, text: 'Республика Коми'}));
+        ele_region.append($('<option>', {value: 12, text: 'Республика Марий Эл'}));
+        ele_region.append($('<option>', {value: 13, text: 'Республика Мордовия'}));
+        ele_region.append($('<option>', {value: 14, text: 'Республика Саха (Якутия)'}));
+        ele_region.append($('<option>', {value: 15, text: 'Республика Северная Осетия — Алания'}));
+        ele_region.append($('<option>', {value: 16, text: 'Республика Татарстан'}));
+        ele_region.append($('<option>', {value: 17, text: 'Республика Тыва'}));
+        ele_region.append($('<option>', {value: 18, text: 'Удмуртская Республика'}));
+        ele_region.append($('<option>', {value: 19, text: 'Республика Хакасия'}));
+        ele_region.append($('<option>', {value: 20, text: 'Чеченская Республика'}));
+        ele_region.append($('<option>', {value: 21, text: 'Чувашская Республика'}));
+        ele_region.append($('<option>', {value: 22, text: 'Алтайский край'}));
+        ele_region.append($('<option>', {value: 23, text: 'Краснодарский край'}));
+        ele_region.append($('<option>', {value: 24, text: 'Красноярский край'}));
+        ele_region.append($('<option>', {value: 25, text: 'Приморский край'}));
+        ele_region.append($('<option>', {value: 26, text: 'Ставропольский край'}));
+        ele_region.append($('<option>', {value: 27, text: 'Хабаровский край'}));
+        ele_region.append($('<option>', {value: 28, text: 'Амурская область'}));
+        ele_region.append($('<option>', {value: 29, text: 'Архангельская область'}));
+        ele_region.append($('<option>', {value: 30, text: 'Астраханская область'}));
+        ele_region.append($('<option>', {value: 31, text: 'Белгородская область'}));
+        ele_region.append($('<option>', {value: 32, text: 'Брянская область'}));
+        ele_region.append($('<option>', {value: 33, text: 'Владимирская область'}));
+        ele_region.append($('<option>', {value: 34, text: 'Волгоградская область'}));
+        ele_region.append($('<option>', {value: 35, text: 'Вологодская область'}));
+        ele_region.append($('<option>', {value: 36, text: 'Воронежская область'}));
+        ele_region.append($('<option>', {value: 37, text: 'Ивановская область'}));
+        ele_region.append($('<option>', {value: 38, text: 'Иркутская область'}));
+        ele_region.append($('<option>', {value: 39, text: 'Калининградская область'}));
+        ele_region.append($('<option>', {value: 40, text: 'Калужская область'}));
+        ele_region.append($('<option>', {value: 41, text: 'Камчатский край'}));
+        ele_region.append($('<option>', {value: 42, text: 'Кемеровская область'}));
+        ele_region.append($('<option>', {value: 43, text: 'Кировская область'}));
+        ele_region.append($('<option>', {value: 44, text: 'Костромская область'}));
+        ele_region.append($('<option>', {value: 45, text: 'Курганская область'}));
+        ele_region.append($('<option>', {value: 46, text: 'Курская область'}));
+        ele_region.append($('<option>', {value: 47, text: 'Ленинградская область'}));
+        ele_region.append($('<option>', {value: 48, text: 'Липецкая область'}));
+        ele_region.append($('<option>', {value: 49, text: 'Магаданская область'}));
+        ele_region.append($('<option>', {value: 50, text: 'Московская область'}));
+        ele_region.append($('<option>', {value: 51, text: 'Мурманская область'}));
+        ele_region.append($('<option>', {value: 52, text: 'Нижегородская область'}));
+        ele_region.append($('<option>', {value: 53, text: 'Новгородская область'}));
+        ele_region.append($('<option>', {value: 54, text: 'Новосибирская область'}));
+        ele_region.append($('<option>', {value: 55, text: 'Омская область'}));
+        ele_region.append($('<option>', {value: 56, text: 'Оренбургская область'}));
+        ele_region.append($('<option>', {value: 57, text: 'Орловская область'}));
+        ele_region.append($('<option>', {value: 58, text: 'Пензенская область'}));
+        ele_region.append($('<option>', {value: 59, text: 'Пермский край'}));
+        ele_region.append($('<option>', {value: 60, text: 'Псковская область'}));
+        ele_region.append($('<option>', {value: 61, text: 'Ростовская область'}));
+        ele_region.append($('<option>', {value: 62, text: 'Рязанская область'}));
+        ele_region.append($('<option>', {value: 63, text: 'Самарская область'}));
+        ele_region.append($('<option>', {value: 64, text: 'Саратовская область'}));
+        ele_region.append($('<option>', {value: 65, text: 'Сахалинская область'}));
+        ele_region.append($('<option>', {value: 66, text: 'Свердловская область'}));
+        ele_region.append($('<option>', {value: 67, text: 'Смоленская область'}));
+        ele_region.append($('<option>', {value: 68, text: 'Тамбовская область'}));
+        ele_region.append($('<option>', {value: 69, text: 'Тверская область'}));
+        ele_region.append($('<option>', {value: 70, text: 'Томская область'}));
+        ele_region.append($('<option>', {value: 71, text: 'Тульская область'}));
+        ele_region.append($('<option>', {value: 72, text: 'Тюменская область'}));
+        ele_region.append($('<option>', {value: 73, text: 'Ульяновская область'}));
+        ele_region.append($('<option>', {value: 74, text: 'Челябинская область'}));
+        ele_region.append($('<option>', {value: 75, text: 'Забайкальский край'}));
+        ele_region.append($('<option>', {value: 76, text: 'Ярославская область'}));
+        ele_region.append($('<option>', {value: 77, text: 'Москва'}));
+        ele_region.append($('<option>', {value: 78, text: 'Санкт-Петербург'}));
+        ele_region.append($('<option>', {value: 79, text: 'Еврейская автономная область'}));
+        ele_region.append($('<option>', {value: 80, text: 'Республика Крым'}));
+        ele_region.append($('<option>', {value: 81, text: 'Ненецкий автономный округ'}));
+        ele_region.append($('<option>', {value: 82, text: 'Ханты-Мансийский АО'}));
+        ele_region.append($('<option>', {value: 83, text: 'Чукотский автономный округ'}));
+        ele_region.append($('<option>', {value: 84, text: 'Ямало-Ненецкий АО'}));
+        ele_region.append($('<option>', {value: 85, text: 'Севастополь'}));
+        ele_region.append($('<option>', {value: 86, text: 'Байконур'}));
+        ele_region.append($('<option>', {value: 87, text: 'Донецкая Народная Республика'}));
+        ele_region.append($('<option>', {value: 88, text: 'Луганская Народная Республика'}));
+
+        ele_region.trigger("chosen:updated");
+    }
+}
+
+if (
+    $("#application_sonata_user_registration_country option:selected").val() != 183 &&
+    $("#fos_user_registration_form_country option:selected").val() != 183 &&
+    $("#profile_country option:selected").val() != 183 &&
+    $("#registration_child_country option:selected").val() != 183 &&
+    $("#application_sonata_user_registration_country option:selected").val() != 141 &&
+    $("#fos_user_registration_form_country option:selected").val() != 141 &&
+    $("#profile_country option:selected").val() != 141 &&
+    $("#registration_child_country option:selected").val() != 141
+) {
+    $('#block-region-school').fadeOut(300).find('select').each(function(){
+        $(this).attr({'required':false});
+    });
+} else {
+    $('#block-region-school').fadeIn(300).find('select').each(function(){
+        $(this).attr({'required':true});
+    });
+}
+
+$('form[name="profile"] button').click(function(){
+   $(this).closest('form').find('select[required="required"]').each(function(){
+       if ($(this).val() == "") {
+           $(this).closest('.lk__form-row').find('.chosen-container').each(function () {
+               $(this).addClass('empty-field')
+           })
+       }
+   });
+});
+$('form[name="profile"] select[required="required"]').change(function () {
+    if ($(this).val() !== "") {
+        $(this).closest('.lk__form-row').find('.chosen-container').each(function () {
+            $(this).removeClass('empty-field')
+        })
+    }
+});
+
+
+
+function getNetworks(pageuri) {
+    $.getJSON('http://graph.facebook.com/?id=' + pageuri, function (data) {
+        // вставляем в DOM
+        console.log(data);
+        $('#fb_sharer').text(data.share.share_count);
+    });
+
+    VK = {};
+    VK.Share = {};
+    VK.Share.count = function (index, count) {
+        $('#vk_sharer').text(count);
+    };
+    $.getJSON('https://vk.com/share.php?act=count&index=1&url=' + pageuri + '&format=json&callback=?');
+}
+
+function getUrl() {
+    var vars = [];
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        vars[decodeURIComponent(hash[0])] = decodeURIComponent(hash[1]);
+    }
+    return vars;
+}
+
+function selectInFavorite() {
+    $('#form-favorite').submit();
+}
+
+function addFavorite(elem) {
+    var elem = elem;
+    if ($(elem).data('fav') == true) {
+        $.post('/office/user/notes/ajax', {type: 'normal', val: $(elem).data('id')}, function (v) {
+            if (v == true) {
+                $(elem).removeClass('icon_sidebar-checked').addClass('icon_pushpin');
+                $(elem).data('fav', false);
+            }
+        }, 'json');
+    } else {
+        $.post('/office/user/notes/ajax', {type: 'favorite', val: $(elem).data('id')}, function (v) {
+            if (v == true) {
+                $(elem).removeClass('icon_pushpin').addClass('icon_sidebar-checked');
+                $(elem).data('fav', true);
+            }
+        }, 'json');
+    }
+}
+
+function addFavoriteLesson(elem) {
+    var elem = elem;
+    if ($(elem).data('fav') == true) {
+        $.post('/office/user/favorite/ajax', {type: 'normal', val: $(elem).data('id')}, function (v) {
+            if (v == true) {
+                $(elem).removeClass('icon_sidebar-checked').addClass('icon_star');
+                $(elem).data('fav', false);
+            }
+        }, 'json');
+    } else {
+        $.post('/office/user/favorite/ajax', {type: 'favorite', val: $(elem).data('id')}, function (v) {
+            if (v == true) {
+                $(elem).removeClass('icon_star').addClass('icon_sidebar-checked');
+                $(elem).data('fav', true);
+            }
+        }, 'json');
+    }
+}
+
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
+}
+
+function changeUrlParam(param, value) {
+    var currentURL = window.location.href + '&';
+    var change = new RegExp('(' + param + ')=(.*)&', 'g');
+    var newURL = currentURL.replace(change, '$1=' + value + '&');
+
+    if (getURLParameter(param) !== null) {
+        try {
+            window.history.replaceState('', '', newURL.slice(0, -1));
+        } catch (e) {
+            console.log(e);
+        }
+    } else {
+        var currURL = window.location.href;
+        if (currURL.indexOf("?") !== -1) {
+            newURL = window.history.replaceState('', '', currentURL.slice(0, -1) + '&' + param + '=' + value);
+        } else {
+            newURL = window.history.replaceState('', '', currentURL.slice(0, -1) + '?' + param + '=' + value);
+        }
+    }
+    document.location.reload();
+    //window.location.href = newURL;
+}
+
+function noteDelete(elem) {
+    var elem = elem;
+    $.post('/office/user/notes/ajax', {type: 'delete', val: $(elem).data('id')}, function (v) {
+
+    }, 'json');
+}
+
+$('#link').change(function () {
+    if ($('#link:checked').length > 0) {
+        $('#resh_private_notes_lesson').val($('#lesson').val());
+    } else {
+        $('#resh_private_notes_lesson').val(0);
+    }
+});
+
+
+Share = {
+    vkontakte: function (purl, ptitle, pimg, text) {
+        url = 'http://vkontakte.ru/share.php?';
+        url += 'url=' + encodeURIComponent(purl);
+        url += '&title=' + encodeURIComponent(ptitle);
+        url += '&description=' + encodeURIComponent(text);
+        url += '&image=' + encodeURIComponent(pimg);
+        url += '&noparse=true';
+        Share.popup(url);
+    },
+    odnoklassniki: function (purl, text) {
+        url = 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1';
+        url += '&st.comments=' + encodeURIComponent(text);
+        url += '&st._surl=' + encodeURIComponent(purl);
+        Share.popup(url);
+    },
+    facebook: function (purl, ptitle, pimg, text) {
+        url = 'http://www.facebook.com/sharer.php?s=100';
+        url += '&p[title]=' + encodeURIComponent(ptitle);
+        url += '&p[summary]=' + encodeURIComponent(text);
+        url += '&p[url]=' + encodeURIComponent(purl);
+        url += '&p[images][0]=' + encodeURIComponent(pimg);
+        Share.popup(url);
+    },
+    twitter: function (purl, ptitle) {
+        url = 'http://twitter.com/share?';
+        url += 'text=' + encodeURIComponent(ptitle);
+        url += '&url=' + encodeURIComponent(purl);
+        url += '&counturl=' + encodeURIComponent(purl);
+        Share.popup(url);
+    },
+    mailru: function (purl, ptitle, pimg, text) {
+        url = 'http://connect.mail.ru/share?';
+        url += 'url=' + encodeURIComponent(purl);
+        url += '&title=' + encodeURIComponent(ptitle);
+        url += '&description=' + encodeURIComponent(text);
+        url += '&imageurl=' + encodeURIComponent(pimg);
+        Share.popup(url)
+    },
+
+    popup: function (url) {
+        var w = Math.min($(window).width() - 40, 630),
+            h = Math.min($(window).height() - 40, 436);
+
+        window.open(url, '', 'toolbar=0,status=0,width=' + w + ',height=' + h);
+    }
+};
+
+(function () {
+    $('.js-load-lessons-more').on('click', function () {
+        var $this = $(this),
+            base_url = $this.attr('data-base-url'),
+            next = $this.attr('data-next-page'),
+            $container = $('.js-lesson-block-wrapper');
+
+        $.get(base_url, {page: next}, function (data) {
+            if ('success' == data.result) {
+                $container.append(data.html);
+                if (!data.nextPage) {
+                    $this.hide();
+                } else {
+                    $this.attr('data-next-page', data.nextPage);
+                }
+            }
+        });
+    })
+})();
+
+(function () {
+    $('#journal-subject').on('change', function (evt, params) {
+
+        var $this = $(this),
+            val = $this.val(),
+            $list = $('.js-journal-subject'),
+            $current = $('.js-journal-subject[data-id=' + val + ']');
+
+        if ($(this).hasClass('sys_loading')) {
+            return false;
+        }
+
+        if (val && $current.length) {
+            $list.hide();
+            $current.show();
+            //$current.find('.lk-subject-open-btn').click();
+        } else {
+            $list.show();
+        }
+
+        var subject = parseInt($('.js-journal-subject-select').val().replace('journal-subject-',''));
+        if (isNaN(subject)) subject = 0;
+        var schoolClass = parseInt(params.selected);
+        if (isNaN(schoolClass)) schoolClass = 0;
+        var lesson = parseInt($('.js-journal-lesson-select').val());
+        if (isNaN(lesson)) lesson = 0;
+        var status = parseInt($('.js-journal-status-select').val());
+
+        $(this).addClass('sys_loading');
+        $.get('/office/user/journal/load_classes/'+parseInt(params.selected.replace('journal-subject-','')), function (data) {
+            $('.js-journal-class-select').prop('disabled',false);
+            $('.js-journal-class-select').html(data);
+            $(".js-journal-class-select").trigger("chosen:updated");
+            $('#journal-subject').removeClass('sys_loading');
+        }, 'html');
+
+        $.get('/office/user/journal/load_lessons_results/'+subject+'/'+schoolClass+'/'+lesson+'/'+status, function (data) {
+            $('#lk-subjects-block').empty().html(data);
+            $('#journal-class').removeClass('sys_loading');
+            $('#lk-subjects-block').find('.lk-subject-open-btn').click();
+        }, 'html');
+        /*
+        $.get('/office/user/journal/load_lessons_results/'+parseInt(params.selected.replace('journal-subject-',''))+'/0/'+$('.js-journal-status-select').val(), function (data) {
+            $('.lk-subjects-box').html(data);
+            $('.js-journal-subject-select').removeClass('sys_loading');
+        }, 'html');
+*/
+
+    });
+
+    $('#journal-class').on('change', function (evt, params) {
+
+        var $this = $(this), val = $this.val();
+
+        var subject = parseInt($('.js-journal-subject-select').val().replace('journal-subject-',''));
+        if (isNaN(subject)) subject = 0;
+        var schoolClass = parseInt(params.selected);
+        if (isNaN(schoolClass)) schoolClass = 0;
+        var lesson = parseInt($('.js-journal-lesson-select').val());
+        if (isNaN(lesson)) lesson = 0;
+        var status = parseInt($('.js-journal-status-select').val());
+
+        if ($(this).hasClass('sys_loading')) {
+            return false;
+        }
+
+        $(this).addClass('sys_loading');
+        $.get('/office/user/journal/load_lessons/'+subject+'/'+schoolClass, function (data) {
+            $('.js-journal-status-select').prop('disabled',false);
+            $(".js-journal-status-select").trigger("chosen:updated");
+            $('.js-journal-lesson-select').prop('disabled',false);
+            $('.js-journal-lesson-select').html(data);
+            $(".js-journal-lesson-select").trigger("chosen:updated");
+            $('#journal-class').removeClass('sys_loading');
+        }, 'html');
+
+        $.get('/office/user/journal/load_lessons_results/'+subject+'/'+schoolClass+'/'+lesson+'/'+status, function (data) {
+            $('#lk-subjects-block').empty().html(data);
+            $('#journal-class').removeClass('sys_loading');
+            $('#lk-subjects-block').find('.lk-subject-open-btn').click();
+        }, 'html');
+
+    });
+
+    $('#journal-lesson').on('change', function (evt, params) {
+
+        var $this = $(this), val = $this.val();
+
+        var subject = parseInt($('.js-journal-subject-select').val().replace('journal-subject-',''));
+        if (isNaN(subject)) subject = 0;
+        var schoolClass = parseInt($('.js-journal-class-select').val());
+        if (isNaN(schoolClass)) schoolClass = 0;
+        var lesson = parseInt(params.selected);
+        if (isNaN(lesson)) lesson = 0;
+        var status = parseInt($('.js-journal-status-select').val());
+
+        if ($(this).hasClass('sys_loading')) {
+            return false;
+        }
+
+        $(this).addClass('sys_loading');
+        const url = Routing.generate('private_office_pupil_load_lessons_results_subject', {subject: subject, class: schoolClass, lesson: lesson, status: status});
+        $.get(url, function (data) {
+            $('#lk-subjects-block').empty().html(data);
+            $('#journal-status').val('0');
+            $('#journal-status').prop('disabled', true);
+            $("#journal-status").trigger("chosen:updated");
+            $('#journal-lesson').removeClass('sys_loading');
+            $('#lk-subjects-block').find('.lk-subject-open-btn').click();
+        }, 'html');
+
+    });
+
+    $('#journal-status').on('change', function (evt, params) {
+
+        var $this = $(this),
+            val = $this.val();
+        var subject = parseInt($('.js-journal-subject-select').val().replace('journal-subject-',''));
+        if (isNaN(subject)) subject = 0;
+        var schoolClass = parseInt($('.js-journal-class-select').val());
+        if (isNaN(schoolClass)) schoolClass = 0;
+        var lesson = parseInt($('.js-journal-lesson-select').val());
+        if (isNaN(lesson)) lesson = 0;
+        var status = parseInt(params.selected);
+
+        if ($(this).hasClass('sys_loading')) {
+            return false;
+        }
+
+        $(this).addClass('sys_loading');
+        const url = Routing.generate('private_office_pupil_load_lessons_results_subject', {subject: subject, class: schoolClass, lesson: lesson, status: status});
+        $.get(url, function (data) {
+            $('#lk-subjects-block').empty().html(data);
+            $('#journal-status').removeClass('sys_loading');
+        }, 'html');
+
+    });
+
+    $('.hover-audio_div').hover(
+        function() {
+            $(this).parent().find("p, h3, h4, h5, ol, ul, table").addClass("highlighted-text");
+            // $(this).next("table").addClass("highlighted-text");
+        },
+        function() {
+            $(this).parent().find("p, h3, h4, h5, ol, ul, table").removeClass("highlighted-text");
+            // $(this).next("table").removeClass("highlighted-text");
+        });
+
+    $('.btn-gray-month').on('click', function() {
+        if ($(this).parent().parent().find('.gray-month_wrap').css('display')=='none')
+            $(this).parent().parent().find('.gray-month_wrap').show();
+        else
+            $(this).parent().parent().find('.gray-month_wrap').hide();
+
+    });
+
+
+})();

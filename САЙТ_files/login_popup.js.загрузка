@@ -1,0 +1,93 @@
+(function () {
+    const $loginContainer = $('.menu-slide');
+
+
+    const $popup = $('._login-menu'),
+        $loginTab = $popup.find('.user-action .tab').eq(0),
+        $registerTab = $popup.find('.user-action .tab').eq(1),
+        $loginContent = $popup.find('.tab-content').eq(0),
+        $registerContent = $popup.find('.tab-content').eq(1);
+
+    const loginHandler = () => {
+        closePopups();
+        $registerTab.removeClass('tab-active');
+        $loginTab.addClass('tab-active');
+        $registerContent.removeClass('tab-content-visible');
+        $loginContent.addClass('tab-content-visible');
+
+        $('body').addClass('menu-slide--active').css({paddingRight: getScrollbarWidth() + 'px'});
+        $popup.addClass('_triggered _displayed');
+    };
+
+    const registerHandler = () => {
+        closePopups();
+        $loginTab.removeClass('tab-active');
+        $registerTab.addClass('tab-active');
+        $loginContent.removeClass('tab-content-visible');
+        $registerContent.addClass('tab-content-visible');
+        $('body').addClass('menu-slide--active').css({paddingRight: getScrollbarWidth() + 'px'});
+        $popup.addClass('_triggered _displayed');
+        $loginContainer.css({paddingRight: getScrollbarWidth() + 'px'});
+        setTimeout(() => {
+            $loginContainer.css({overflow: 'auto', paddingRight: ''});
+        }, 700);
+    };
+
+    const closeHandler = () => {
+        $popup.removeClass('_triggered').css({paddingRight: getScrollbarWidth() + 'px'});
+        $loginContainer.css({overflow: 'hidden'});
+        setTimeout(() => {
+            $popup.removeClass('_displayed');
+            $('body').removeClass('menu-slide--active').css({paddingRight: ''});
+        }, 700);
+    };
+
+    const closePopups = () => {
+        $('._triggered, ._displayed').removeClass('_triggered, _displayed');
+        $('.main').show();
+        $('.footer').show();
+        $('.outer-sf').show();
+    };
+
+    const $body = $('body');
+    $body.on('click', '.js-login-btn', loginHandler);
+    $body.on('click', '.js-register-btn', registerHandler);
+    $body.on('click', '.js-close-btn', closeHandler);
+
+    $('._stop-prop').on('click', function (e) {
+        e.stopPropagation();
+    });
+
+    $(document).keyup(function (e) {
+        if (e.keyCode === 27 && $popup.hasClass('_triggered') && !$('._terms-window').hasClass('_shown')) {
+            $('._login-menu').removeClass('_clicked _triggered');
+            closeHandler();
+        }
+    });
+
+    function getScrollbarWidth() {
+        var outer = document.createElement("div");
+        outer.style.visibility = "hidden";
+        outer.style.width = "100px";
+        outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
+
+        document.body.appendChild(outer);
+
+        var widthNoScroll = outer.offsetWidth;
+        // force scrollbars
+        outer.style.overflow = "scroll";
+
+        // add innerdiv
+        var inner = document.createElement("div");
+        inner.style.width = "100%";
+        outer.appendChild(inner);
+
+        var widthWithScroll = inner.offsetWidth;
+
+        // remove divs
+        outer.parentNode.removeChild(outer);
+
+        return widthNoScroll - widthWithScroll;
+    }
+
+})();

@@ -1,0 +1,19 @@
+const swiper = new Swiper('.swiper-container', {
+    slidesPerView: 3,
+    spaceBetween: 10,
+    watchOverflow: true,
+    navigation: {
+        nextEl: '.swiper-next-wrapper',
+        prevEl: '.swiper-prev-wrapper',
+    },
+    breakpoints: {
+
+        750: {
+            slidesPerView: 4,
+        },
+        1280: {
+            slidesPerView: 5,
+            spaceBetween: 15,
+        },
+    }
+});

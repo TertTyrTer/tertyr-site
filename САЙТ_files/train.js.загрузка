@@ -1,0 +1,54 @@
+import Test from '../components/test.js';
+import TestCollection from "../components/testCollection.js";
+import Navigation from '../components/navigation.js';
+import AnswerChecker from '../components/answerChecker.js'
+
+(function () {
+    const tests = new TestCollection();
+
+    const $container = $('.tests-layout');
+    const navigation = new Navigation($container, true);
+
+    const registerTests = () => {
+        $('.js-test-item').each(function (index, container) {
+            const sceneNumber = $(container).parents('.scene').data('id');
+            const id = $(container).data('test-id');
+            const test = new Test(id, container, sceneNumber);
+
+            tests.add(test);
+        });
+    };
+
+    registerTests();
+    const answerChecker = new AnswerChecker($container, tests);
+    tests.init();
+    navigation.init();
+    answerChecker.init();
+
+    $container.on('click', '.test-meta .test__title img, .interaction-item.associated-sets img', function () {
+        $.fancybox({
+            href: $(this).attr('src')
+        });
+    });
+
+    $('.modal-js').on('click', function (e) {
+        e.preventDefault();
+        var dataId = $(this).attr('data-id');
+        var dataHref = $(this).attr('data-href');
+        var html = "<div class='overlay' style='display:block' data-id='" + dataId + "'>\n" +
+            "               <div class='popup exercise-popup' style='padding: 50px 20px 20px 20px;'>\n" +
+            "                  <button class='close close-overlay' title='Закрыть'></button>\n" +
+            "                  <iframe src='" + dataHref + "' width='100%' height='100%' style='min-height:600px'></iframe>\n" +
+            "               </div>\n" +
+            "            </div>";
+        $(this).parent().append(html);
+
+        $('.close-overlay').on('click', function () {
+            $('.overlay').map(function (key, value) {
+                $(value).remove();
+            });
+        });
+
+        return false;
+    });
+})();
